@@ -114,73 +114,7 @@
 		<title>OpenOne'ch</title>
 		<meta charset='utf-8'>
 		<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
-		<style>
-			body{
-				background-color: #0402AC;
-				color: #54FEFC;
-			}
-
-			a{
-				color: #54FEFC;
-			}
-
-			a:hover{
-				background-color: #54FEFC;
-				color: #0402AC;
-			}
-			
-			.submit {
-				background-color: #A8A8A8;
-				color: #000000;
-				border: 6px double #000000;
-			}
-
-			.submit tr td{
-				padding: 8px;
-			}
-			
-			.submit input{
-				background-color: #00A8A8;
-				border: none;
-				padding: 4px;
-			}
-			
-			.submit .file{
-				background-color: #A8A8A8;
-				border: none;
-				padding: 4px;
-			}
-
-			.submit .file:hover{
-				color: #FEFE54;
-			}
-
-			.submit .file::file-selector-button{
-				display: none;
-			}
-			
-			.submit textarea{
-				background-color: #00A8A8;
-				border: none;
-				padding: 4px;
-			}
-			
-			.submit button{
-				background-color: #A8A8A8;
-				border: none;
-			}
-			
-			.submit button:hover{
-				color: #FEFE54;
-			}
-			
-			.post{
-				padding: 8px;
-				margin: 16px;
-				border: 6px double #54FEFC;
-			}
-			
-		</style>
+		<link rel="stylesheet" href="css.css">
 		<script>
 			function answer(id){
 				texthtml = document.getElementById('textt').innerHTML;
@@ -193,27 +127,29 @@
 		<center><?php echo("<h1>OpenOne'ch! / " .$myname['name']. "</h1>"); ?></center>
 		<form method="post"  enctype="multipart/form-data">
 			
-			<table class="submit">
-				<tr>
-					<td>Ник (Анонимус): </td>
-					<td><input type="text" name="name"></td>
-				</tr>
-				<tr>
-					<td>Текст: </td>
-					<td><textarea name="text" id="textt"></textarea></td>
-				</tr>
-				<tr>
-					<td>Картинка: </td>
-					<td><input type="file" class="file" name="file"></td>
-				</tr>
-				<tr>
-					<td><img src="captcha.php"></td>
-					<td>Каптча: <br><input type="text" name="captcha"></td>
-				</tr>
-				<tr>
-					<td><button type="submit" name="post">[ Выложить ]</button></td>
-				</tr>
-			</table>
+			<div class="table-wrapper">
+				<table class="submit">
+					<tr>
+						<td>Ник (Анонимус): </td>
+						<td><input type="text" name="name"></td>
+					</tr>
+					<tr>
+						<td>Текст: </td>
+						<td><textarea name="text" id="textt"></textarea></td>
+					</tr>
+					<tr>
+						<td>Картинка: </td>
+						<td><input type="file" class="file" name="file"></td>
+					</tr>
+					<tr>
+						<td><img src="captcha.php"></td>
+						<td>Каптча: <br><input type="text" name="captcha"></td>
+					</tr>
+					<tr>
+						<td><button type="submit" name="post">[ Выложить ]</button></td>
+					</tr>
+				</table>
+			</div>
 			
 		</form>
 		
@@ -221,7 +157,7 @@
 			<table class="post" id="<?php echo($post['id']); ?>">
 				<tr class="inter_post">
 					<?php if($post['img'] != null){ echo('<td><img height="128px" src="' .$post['img']. '">'); echo('<br><a href="' .$post['img']. '">Посмотреть</a></td>'); } ?>
-					<td><b><?php if($post['name'] != null) { echo(htmlspecialchars($post['name'])); } else { echo('Анонимус'); } ?><?php echo(date(" H:i m/d/y", $post['date'])) ?> <?php echo($post['id']); ?></b>
+					<td><p><?php if($post['name'] != null) { echo(htmlspecialchars($post['name'])); } else { echo('Анонимус'); } ?><?php echo(date(" H:i m/d/y", $post['date'])) ?> <?php echo($post['id']); ?></p>
 					<?php echo('<p>' .create_link(htmlspecialchars($post['text'])). '</p>'); ?>
 					<a href="javascript:answer('<?php echo($post['id']); ?>');">Ответить</a></td>
 				</tr>
