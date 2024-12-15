@@ -78,14 +78,14 @@
 				if($error == 0){
 					if(empty($_FILES) or $_FILES['file']['error'] != 0){
 						$db->query("INSERT INTO posts (text, thread, name, ip, date, type) VALUES (
-							" .$db->quote($_POST['text']). ", 
+							" .$db->quote(nl2br($_POST['text'])). ", 
 							'" .(int)$_GET['id']. "', 
 							" .$db->quote($_POST['name']). ", 
 							" .$db->quote($_SERVER['REMOTE_ADDR']). ", 
 							'" .time(). "', 0)");
 					} else {
 						$db->query("INSERT INTO posts (text, thread, name, ip, date, img, type) VALUES (
-							" .$db->quote($_POST['text']). ", 
+							" .$db->quote(nl2br($_POST['text'])). ", 
 							'" .(int)$_GET['id']. "', 
 							" .$db->quote($_POST['name']). ", 
 							" .$db->quote($_SERVER['REMOTE_ADDR']). ", 
@@ -170,7 +170,7 @@
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
 						</p>
 						<?php echo('<a href="' .$myname['img']. '" download="' .$decoded['name']. '">' .$decoded['name']. ' (' .$decoded['size']. ' байт)</a>'); ?>
-						<?php echo('<p>' .htmlspecialchars($decoded['desc']). '</p>'); ?>
+						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', htmlspecialchars($decoded['desc'])). '</p>'); ?>
 					</td>
 				</tr>
 			</table>
@@ -190,7 +190,7 @@
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
 						</p>
 						<?php echo('<a href="flash.php?id='.(int)$_GET['id'].'">' .$decoded['name']. ' (Сыграть)</a>'); ?>
-						<?php echo('<p>' .htmlspecialchars($decoded['desc']). '</p>'); ?>
+						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', htmlspecialchars($decoded['desc'])). '</p>'); ?>
 					</td>
 				</tr>
 			</table>
@@ -214,7 +214,7 @@
 							?>
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
 						</p>
-						<?php echo('<p>' .htmlspecialchars($myname['text']). '</p>'); ?>
+						<?php echo('<p>' . str_replace('&lt;br /&gt;', '<br>', htmlspecialchars($myname['text']). '</p>')); ?>
 					</td>
 				</tr>
 			</table>
@@ -241,7 +241,7 @@
 							<?php echo(date(" H:i m/d/y", $post['date'])) ?> 
 							<?php echo($post['id']); ?>
 						</p>
-						<?php echo('<p>' .create_link(htmlspecialchars($post['text'])). '</p>'); ?>
+						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', create_link(htmlspecialchars($post['text']))). '</p>'); ?>
 						<a href="javascript:answer('<?php echo($post['id']); ?>');">Ответить</a>
 					</td>
 				</tr>

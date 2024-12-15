@@ -81,14 +81,14 @@
 					if($error == 0){
 						if(empty($_FILES) or $_FILES['file']['error'] != 0){
 							$db->query("INSERT INTO posts (text, board, name, ip, date, type) VALUES (
-								" .$db->quote($_POST['text']). ", 
+								" .$db->quote(nl2br($_POST['text'])). ", 
 								'" .(int)$_GET['id']. "', 
 								" .$db->quote($_POST['name']). ", 
 								" .$db->quote($_SERVER['REMOTE_ADDR']). ", 
 								'" .time(). "', 1)");
 						} else {
 							$db->query("INSERT INTO posts (text, board, name, ip, date, img, type) VALUES (
-								" .$db->quote($_POST['text']). ", 
+								" .$db->quote(nl2br($_POST['text'])). ", 
 								'" .(int)$_GET['id']. "', 
 								" .$db->quote($_POST['name']). ", 
 								" .$db->quote($_SERVER['REMOTE_ADDR']). ", 
@@ -110,7 +110,7 @@
 							$file_json = array(
 								'name' => $_FILES['file']['name'],
 								'size' => $_FILES['file']['size'],
-								'desc' => $_POST['text']
+								'desc' => nl2br($_POST['text'])
 							);
 
 							$db->query("INSERT INTO posts (text, board, name, ip, date, img, type) VALUES (
@@ -137,7 +137,7 @@
 							$file_json = array(
 								'name' => $_FILES['file']['name'],
 								'size' => $_FILES['file']['size'],
-								'desc' => $_POST['text']
+								'desc' => nl2br($_POST['text'])
 							);
 
 							$db->query("INSERT INTO posts (text, board, name, ip, date, img, type) VALUES (
@@ -234,7 +234,7 @@
 							<td><?php echo($decoded['size']) ?></td>
 							<td><?php echo(date("m/d/y", $post['date'])) ?></td>
 							<td><?php echo(date("H:i", $post['date'])) ?></td>
-							<td><a href="board.php?id=<?php echo($post['id']); ?>">В тред</a></td>
+							<td><a href="board.php?id=<?php echo($post['id']); ?>">В тред (<?php echo($db->query('SELECT * FROM posts WHERE thread = ' .$post['id'])->rowCount()) ?>)</a></td>
 						</tr>
 					<?php endwhile; ?>
 				</tbody>
@@ -260,8 +260,8 @@
 								?>
 								<?php echo(date(" H:i m/d/y", $post['date'])) ?>
 							</p>
-							<?php echo('<p>' .htmlspecialchars($post['text']). '</p>'); ?>
-							<a href="board.php?id=<?php echo($post['id']); ?>">В тред</a>
+							<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', htmlspecialchars($post['text'])). '</p>'); ?>
+							<a href="board.php?id=<?php echo($post['id']); ?>">В тред (<?php echo($db->query('SELECT * FROM posts WHERE thread = ' .$post['id'])->rowCount()) ?>)</a>
 						</td>
 					</tr>
 				</table>
