@@ -14,7 +14,7 @@
 	<body>
 		<center>
 			<h1>OpenOne'ch</h1>
-			<p>Имеджборд от <a href="https://t.me/blopsoft">OpenOne</a> который пробует копировать 4chan и 4pda</p>			
+			<p>Имиджборд от <a href="https://t.me/openone_channel">OpenOne</a> который пробует копировать 4chan и 4pda</p>			
 		</center>
 		
 		<h2 align="center">Доски: </h2>
