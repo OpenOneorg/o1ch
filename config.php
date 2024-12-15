@@ -1,5 +1,10 @@
 <?php
-    require "anti-ddos-lite/anti-ddos-lite.php";
+    // Если у вас InfinityFree или другой говнохостинг, то оставьте тут false
+    $antiddos = false;
+
+    if($antiddos == true){
+        require "anti-ddos-lite/anti-ddos-lite.php";
+    }
 
     session_start();
 
