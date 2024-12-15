@@ -3,14 +3,6 @@
 
     session_start();
 
-    if(empty($_SESSION['ip'])){
-        $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
-    } 
-    
-    if($_SERVER['REMOTE_ADDR'] != $_SESSION['ip']){
-        die("Выключи VPN или Tor соединение!");
-    }
-
     $dbconn = array(
         'server' => 'localhost',
         'user' => 'root',
