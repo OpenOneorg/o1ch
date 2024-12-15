@@ -1,8 +1,9 @@
 <?php 
 	require_once 'config.php';
 	
-	$myname = $db->query("SELECT * FROM board WHERE id = " .(int)$_GET['id'])->fetch(PDO::FETCH_ASSOC);
-	$data = $db->query("SELECT * FROM posts WHERE board = " .(int)$_GET['id']. " ORDER BY date DESC");
+	$myname = $db->query("SELECT * FROM posts WHERE id = " .(int)$_GET['id'])->fetch(PDO::FETCH_ASSOC);
+	$board_name = $db->query("SELECT * FROM board WHERE id = " .(int)$myname['board'])->fetch(PDO::FETCH_ASSOC);
+	$data = $db->query("SELECT * FROM posts WHERE thread = " .(int)$_GET['id']. " ORDER BY date ASC");
 	
 	if(empty($myname)){
 		header("Location: index.php");
@@ -76,20 +77,20 @@
 
 				if($error == 0){
 					if(empty($_FILES) or $_FILES['file']['error'] != 0){
-						$db->query("INSERT INTO posts (text, board, name, ip, date) VALUES (
+						$db->query("INSERT INTO posts (text, thread, name, ip, date, type) VALUES (
 							" .$db->quote($_POST['text']). ", 
 							'" .(int)$_GET['id']. "', 
 							" .$db->quote($_POST['name']). ", 
 							" .$db->quote($_SERVER['REMOTE_ADDR']). ", 
-							'" .time(). "')");
+							'" .time(). "', 0)");
 					} else {
-						$db->query("INSERT INTO posts (text, board, name, ip, date, img) VALUES (
+						$db->query("INSERT INTO posts (text, thread, name, ip, date, img, type) VALUES (
 							" .$db->quote($_POST['text']). ", 
 							'" .(int)$_GET['id']. "', 
 							" .$db->quote($_POST['name']). ", 
 							" .$db->quote($_SERVER['REMOTE_ADDR']). ", 
 							'" .time(). "', 
-							'" .fuckimg($_FILES['file']['tmp_name'], 0, 640). "')");
+							'" .fuckimg($_FILES['file']['tmp_name'], 0, 640). "', 0)");
 					}
 				} else {
 					echo('Bad image<hr>');
@@ -123,8 +124,8 @@
 		</script>
 	</head>
 	<body>
-		<a href="index.php">Домой</a>
-		<center><?php echo("<h1>OpenOne'ch! / " .$myname['name']. "</h1>"); ?></center>
+		<a href="thread.php?id=<?php echo($board_name['id']); ?>">Назад</a>
+		<center><?php echo("<h1>OpenOne'ch! / " .$board_name['name']. "</h1>"); ?></center>
 		<form method="post"  enctype="multipart/form-data">
 			
 			<div class="table-wrapper">
@@ -152,14 +153,97 @@
 			</div>
 			
 		</form>
-		
+
+		<?php if($board_name['type'] == 1): ?>
+			<?php $decoded = json_decode($myname['text'], true); ?>
+			<table class="post">
+				<tr class="inter_post">
+					<td>
+						<p>
+							<?php 
+								if($myname['name'] != null) { 
+									echo(htmlspecialchars($myname['name'])); 
+								} else { 
+									echo('Анонимус'); 
+								} 
+							?>
+							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
+						</p>
+						<?php echo('<a href="' .$myname['img']. '" download="' .$decoded['name']. '">' .$decoded['name']. ' (' .$decoded['size']. ' байт)</a>'); ?>
+						<?php echo('<p>' .htmlspecialchars($decoded['desc']). '</p>'); ?>
+					</td>
+				</tr>
+			</table>
+		<?php elseif($board_name['type'] == 2): ?>
+			<?php $decoded = json_decode($myname['text'], true); ?>
+			<table class="post">
+				<tr class="inter_post">
+					<td>
+						<p>
+							<?php 
+								if($myname['name'] != null) { 
+									echo(htmlspecialchars($myname['name'])); 
+								} else { 
+									echo('Анонимус'); 
+								} 
+							?>
+							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
+						</p>
+						<?php echo('<a href="flash.php?id='.(int)$_GET['id'].'">' .$decoded['name']. ' (Сыграть)</a>'); ?>
+						<?php echo('<p>' .htmlspecialchars($decoded['desc']). '</p>'); ?>
+					</td>
+				</tr>
+			</table>
+		<?php else: ?>
+			<table class="post">
+				<tr class="inter_post">
+					<?php 
+						if($myname['img'] != null){ 
+							echo('<td><img height="128px" src="' .$myname['img']. '">'); 
+							echo('<br><a href="' .$myname['img']. '">Посмотреть</a></td>'); 
+						} 
+					?>
+					<td>
+						<p>
+							<?php 
+								if($myname['name'] != null) { 
+									echo(htmlspecialchars($myname['name'])); 
+								} else { 
+									echo('Анонимус'); 
+								} 
+							?>
+							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
+						</p>
+						<?php echo('<p>' .htmlspecialchars($myname['text']). '</p>'); ?>
+					</td>
+				</tr>
+			</table>
+		<?php endif; ?><hr>
+
 		<?php while($post = $data->fetch(PDO::FETCH_ASSOC)): ?>
 			<table class="post" id="<?php echo($post['id']); ?>">
 				<tr class="inter_post">
-					<?php if($post['img'] != null){ echo('<td><img height="128px" src="' .$post['img']. '">'); echo('<br><a href="' .$post['img']. '">Посмотреть</a></td>'); } ?>
-					<td><p><?php if($post['name'] != null) { echo(htmlspecialchars($post['name'])); } else { echo('Анонимус'); } ?><?php echo(date(" H:i m/d/y", $post['date'])) ?> <?php echo($post['id']); ?></p>
-					<?php echo('<p>' .create_link(htmlspecialchars($post['text'])). '</p>'); ?>
-					<a href="javascript:answer('<?php echo($post['id']); ?>');">Ответить</a></td>
+					<?php 
+						if($post['img'] != null){ 
+							echo('<td><img height="128px" src="' .$post['img']. '">'); 
+							echo('<br><a href="' .$post['img']. '">Посмотреть</a></td>'); 
+						} 
+					?>
+					<td>
+						<p>
+							<?php 
+								if($post['name'] != null) { 
+									echo(htmlspecialchars($post['name'])); 
+								} else { 
+									echo('Анонимус'); 
+								} 
+							?>
+							<?php echo(date(" H:i m/d/y", $post['date'])) ?> 
+							<?php echo($post['id']); ?>
+						</p>
+						<?php echo('<p>' .create_link(htmlspecialchars($post['text'])). '</p>'); ?>
+						<a href="javascript:answer('<?php echo($post['id']); ?>');">Ответить</a>
+					</td>
 				</tr>
 			</table>
 		<?php endwhile; ?>

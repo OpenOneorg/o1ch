@@ -21,7 +21,7 @@
 		<div class="block">
 			<?php 
 				while($boards = $data->fetch(PDO::FETCH_ASSOC)){
-					echo('<a href="board.php?id=' .$boards['id']. '">' .$boards['name']. ' (' .$db->query("SELECT * FROM posts WHERE board = " .$boards['id'])->rowCount(). ')</a><br>');
+					echo('<a href="thread.php?id=' .$boards['id']. '">' .$boards['name']. ' (' .$db->query("SELECT * FROM posts WHERE board = " .$boards['id'])->rowCount(). ')</a><br>');
 				}
 			?>
 			<p>Всего постов на сайте: <?php echo($db->query("SELECT * FROM posts")->rowCount()); ?></p>

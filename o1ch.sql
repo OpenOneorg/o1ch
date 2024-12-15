@@ -10,13 +10,16 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `board` (
   `id` int(32) NOT NULL,
-  `name` varchar(50) NOT NULL
+  `name` varchar(50) NOT NULL,
+  `type` int(1) NOT NULL DEFAULT 0 COMMENT '0 - Обычный\r\n1 - файлы\r\n2 - Флеш'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE `posts` (
   `id` int(32) NOT NULL,
+  `type` int(1) NOT NULL DEFAULT 0,
   `text` varchar(1000) NOT NULL,
-  `board` varchar(4) NOT NULL,
+  `thread` int(32) NOT NULL DEFAULT 0,
+  `board` int(32) NOT NULL DEFAULT 0,
   `name` varchar(50) DEFAULT NULL,
   `ip` varchar(16) NOT NULL,
   `date` int(32) NOT NULL,

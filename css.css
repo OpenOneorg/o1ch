@@ -14,6 +14,10 @@ body{
     color: #54FEFC;
 }
 
+hr{
+    border: 1px solid #54FEFC;
+}
+
 a{
     color: #54FEFC;
 }
@@ -28,6 +32,13 @@ a:hover{
     margin: 16px auto;
     border: 6px double #54FEFC;
     max-width: 540px;
+}
+
+.block1{
+    display: inline-block;
+    padding: 8px;
+    margin: 16px;
+    border: 6px double #54FEFC;
 }
 
 .submit {
@@ -68,6 +79,32 @@ a:hover{
     padding: 8px;
     margin: 16px;
     border: 6px double #54FEFC;
+}
+
+.files {
+    width: 100%;
+    border-collapse: collapse;
+    border: 6px double #54FEFC;
+}
+
+.files thead {
+    color: #ffff57;
+}
+
+.files td {
+    border: solid #54FEFC;
+    border-width: 0px 3px;
+    padding: 4px 2px;
+    text-align: left;
+}
+
+.files tbody tr:hover{
+    background-color: #54FEFC !important;
+    color: #0402AC !important;
+}
+
+.files tbody td:hover{
+    border-color: #0402AC;
 }
 
 .table-wrapper {
