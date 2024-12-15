@@ -234,7 +234,7 @@
 							<td><?php echo($decoded['size']) ?></td>
 							<td><?php echo(date("m/d/y", $post['date'])) ?></td>
 							<td><?php echo(date("H:i", $post['date'])) ?></td>
-							<td><a href="board.php?id=<?php echo($post['id']); ?>">Ответить</a></td>
+							<td><a href="board.php?id=<?php echo($post['id']); ?>">В тред</a></td>
 						</tr>
 					<?php endwhile; ?>
 				</tbody>
@@ -261,7 +261,7 @@
 								<?php echo(date(" H:i m/d/y", $post['date'])) ?>
 							</p>
 							<?php echo('<p>' .htmlspecialchars($post['text']). '</p>'); ?>
-							<a href="board.php?id=<?php echo($post['id']); ?>">Ответить</a>
+							<a href="board.php?id=<?php echo($post['id']); ?>">В тред</a>
 						</td>
 					</tr>
 				</table>
