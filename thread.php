@@ -167,10 +167,10 @@
 		<title>OpenOne'ch</title>
 		<meta charset='utf-8'>
 		<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
-		<link rel="stylesheet" href="css.css">
+		<link rel="stylesheet" href="<?php echo($_SESSION['theme']) ?>">
 	</head>
 	<body>
-		<a href="index.php">Домой</a>
+		<a href="index.php" class="right">Домой</a>
 		<center><?php echo("<h1>OpenOne'ch! / " .$myname['name']. "</h1>"); ?></center>
 		<form method="post"  enctype="multipart/form-data">
 			<div class="table-wrapper">
@@ -207,6 +207,7 @@
 						<td>Размер</td>
 						<td>Дата</td>
 						<td>Время</td>
+						<td>Описание</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -220,7 +221,7 @@
 							
 							$decoded = json_decode($post['text'], true); 
 						?>
-						<tr>
+						<tr onclick="window.location.href='board.php?id=<?php echo($post['id']); ?>';">
 							<td>
 								<?php 
 									if($post['name'] != null) { 
@@ -230,11 +231,12 @@
 									} 
 								?>
 							</td>
-							<td><a href="<?php echo($post['img']); ?>" download="<?php echo($decoded['name']) ?>"><?php echo($decoded['name']) ?></a></td>
+							<td><?php echo($decoded['name']) ?></td>
 							<td><?php echo($decoded['size']) ?></td>
 							<td><?php echo(date("m/d/y", $post['date'])) ?></td>
 							<td><?php echo(date("H:i", $post['date'])) ?></td>
-							<td><a href="board.php?id=<?php echo($post['id']); ?>">В тред (<?php echo($db->query('SELECT * FROM posts WHERE thread = ' .$post['id'])->rowCount()) ?>)</a></td>
+							<td><?php echo($decoded['desc']) ?></td>
+							<td>В тред (<?php echo($db->query('SELECT * FROM posts WHERE thread = ' .$post['id'])->rowCount()) ?> Постов)</td>
 						</tr>
 					<?php endwhile; ?>
 				</tbody>

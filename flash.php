@@ -18,17 +18,18 @@
 		<title>OpenOne'ch</title>
 		<meta charset='utf-8'>
 		<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
-		<link rel="stylesheet" href="css.css">
+		<link rel="stylesheet" href="<?php echo($_SESSION['theme']) ?>">
 	</head>
 	<body>
-        <a href="board.php?id=<?php echo($myname['id']); ?>">Назад</a>
+        <a href="board.php?id=<?php echo($myname['id']); ?>" class="right">Назад</a>
 		<center>
 			<h1>OpenOne'ch! // Flash Player</h1>	
             <div class="block1">
                 <?php $decoded = json_decode($myname['text'], true); ?>
                 <h3><?php echo($decoded['name']) ?></h3>
-                <embed src="<?php echo($myname['img']) ?>" type="application/x-shockwave-flash">
-                <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+                <embed src="<?php echo($myname['img']) ?>" type="application/x-shockwave-flash" width="640px" height="480px">
+                <script src="https://unpkg.com/@ruffle-rs/ruffle"></script><br><br>
+				<a href="<?php echo($myname['img']) ?>" download="<?php echo($decoded['name']) ?>">Скачать .swf файл</a>
             </div>
         </center>
 	</body>

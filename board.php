@@ -115,7 +115,7 @@
 		<title>OpenOne'ch</title>
 		<meta charset='utf-8'>
 		<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
-		<link rel="stylesheet" href="css.css">
+		<link rel="stylesheet" href="<?php echo($_SESSION['theme']) ?>">
 		<script>
 			function answer(id){
 				texthtml = document.getElementById('textt').innerHTML;
@@ -124,7 +124,7 @@
 		</script>
 	</head>
 	<body>
-		<a href="thread.php?id=<?php echo($board_name['id']); ?>">Назад</a>
+		<a href="thread.php?id=<?php echo($board_name['id']); ?>" class="right">Назад</a>
 		<center><?php echo("<h1>OpenOne'ch! / " .$board_name['name']. "</h1>"); ?></center>
 		<form method="post"  enctype="multipart/form-data">
 			
@@ -189,7 +189,7 @@
 							?>
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
 						</p>
-						<?php echo('<a href="flash.php?id='.(int)$_GET['id'].'">' .$decoded['name']. ' (Сыграть)</a>'); ?>
+						<?php echo('<a href="flash.php?id='.(int)$_GET['id'].'">' .$decoded['name']. ' (Проиграть)</a>'); ?>
 						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', htmlspecialchars($decoded['desc'])). '</p>'); ?>
 					</td>
 				</tr>
