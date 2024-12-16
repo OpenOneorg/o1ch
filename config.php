@@ -1,12 +1,22 @@
 <?php
-    // Если у вас InfinityFree или другой говнохостинг, то оставьте тут false
-    $antiddos = false;
+    $links = array(
+        'Telegram' => 'https://t.me/openone_channel',
+        'Github' => 'https://github.com/blopsoft/o1ch'
+    );
+
+    $email = "legubrawl@gmail.com";
+
+    $theme = "css.css";
 
     if($antiddos == true){
         require "anti-ddos-lite/anti-ddos-lite.php";
     }
 
     session_start();
+
+    if(!isset($_SESSION['theme'])){
+        $_SESSION['theme'] = 'css.css';
+    }
 
     $dbconn = array(
         'server' => 'localhost',
