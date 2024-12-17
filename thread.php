@@ -160,6 +160,15 @@
 			echo('Invalid CAPTCHA<hr>');
 		}
 	}
+
+	function conlink($text) {
+		$pattern = '/(http|https|ftp):\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/';
+		
+		$text = preg_replace($pattern, '<a href="$0" target="_blank">$0</a>', $text);
+		
+		return $text;
+	}
+	
 ?>
 
 <html>
@@ -262,7 +271,7 @@
 								?>
 								<?php echo(date(" H:i m/d/y", $post['date'])) ?>
 							</p>
-							<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', htmlspecialchars($post['text'])). '</p>'); ?>
+							<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', conlink(htmlspecialchars($post['text']))). '</p>'); ?>
 							<a href="board.php?id=<?php echo($post['id']); ?>">В тред (<?php echo($db->query('SELECT * FROM posts WHERE thread = ' .$post['id'])->rowCount()) ?>)</a>
 						</td>
 					</tr>

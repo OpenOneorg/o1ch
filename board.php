@@ -108,6 +108,14 @@
     	$replacement = "<a href=\"#$1\">$0</a>";
     	return preg_replace($pattern, $replacement, $string);
 	}
+
+	function conlink($text) {
+		$pattern = '/(http|https|ftp):\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/';
+		
+		$text = preg_replace($pattern, '<a href="$0" target="_blank">$0</a>', $text);
+		
+		return $text;
+	}
 ?>
 
 <html>
@@ -170,7 +178,7 @@
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
 						</p>
 						<?php echo('<a href="' .$myname['img']. '" download="' .$decoded['name']. '">' .$decoded['name']. ' (' .$decoded['size']. ' байт)</a>'); ?>
-						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', htmlspecialchars($decoded['desc'])). '</p>'); ?>
+						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', conlink(htmlspecialchars($decoded['desc']))). '</p>'); ?>
 					</td>
 				</tr>
 			</table>
@@ -190,7 +198,7 @@
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
 						</p>
 						<?php echo('<a href="flash.php?id='.(int)$_GET['id'].'">' .$decoded['name']. ' (Проиграть)</a>'); ?>
-						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', htmlspecialchars($decoded['desc'])). '</p>'); ?>
+						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', conlink(htmlspecialchars($decoded['desc']))). '</p>'); ?>
 					</td>
 				</tr>
 			</table>
@@ -214,7 +222,7 @@
 							?>
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
 						</p>
-						<?php echo('<p>' . str_replace('&lt;br /&gt;', '<br>', htmlspecialchars($myname['text']). '</p>')); ?>
+						<?php echo('<p>' . str_replace('&lt;br /&gt;', '<br>', conlink(htmlspecialchars($myname['text'])). '</p>')); ?>
 					</td>
 				</tr>
 			</table>
@@ -241,7 +249,7 @@
 							<?php echo(date(" H:i m/d/y", $post['date'])) ?> 
 							<?php echo($post['id']); ?>
 						</p>
-						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', create_link(htmlspecialchars($post['text']))). '</p>'); ?>
+						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', create_link(conlink(htmlspecialchars($post['text'])))). '</p>'); ?>
 						<a href="javascript:answer('<?php echo($post['id']); ?>');">Ответить</a>
 					</td>
 				</tr>
