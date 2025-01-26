@@ -8,6 +8,7 @@
 
     $theme = "css.css";
 
+    // Если у вас говнохостинг по типу InfinityFree или уже есть АнтиДуДос, то не включать!
     $antiddos = false;
 
     if($antiddos == true){
