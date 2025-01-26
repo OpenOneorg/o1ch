@@ -8,6 +8,8 @@
 
     $theme = "css.css";
 
+    $antiddos = false;
+
     if($antiddos == true){
         require "anti-ddos-lite/anti-ddos-lite.php";
     }
