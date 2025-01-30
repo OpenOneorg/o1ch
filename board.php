@@ -4,6 +4,7 @@
 	$myname = $db->query("SELECT * FROM posts WHERE id = " .(int)$_GET['id'])->fetch(PDO::FETCH_ASSOC);
 	$board_name = $db->query("SELECT * FROM board WHERE id = " .(int)$myname['board'])->fetch(PDO::FETCH_ASSOC);
 	$data = $db->query("SELECT * FROM posts WHERE thread = " .(int)$_GET['id']. " ORDER BY date ASC");
+	$error = '';
 	
 	if(empty($myname)){
 		header("Location: index.php");
@@ -12,7 +13,7 @@
 	if(isset($_POST['post'])){
 		if($_SESSION['code'] == $_POST['captcha']){
 			if(empty(trim($_POST['text']))){
-				echo('No text<hr>');
+				$error = 'Нет текста<hr>';
 			} else{
 				$error = 0;
 
@@ -93,14 +94,25 @@
 							'" .fuckimg($_FILES['file']['tmp_name'], 0, 640). "', 0)");
 					}
 				} else {
-					echo('Bad image<hr>');
+					$error = 'Плохой формат изображение<hr>';
 				}
 
 				header("Refresh:0");
 			}
 		} else {
-			echo('Invalid CAPTCHA<hr>');
+			$error = 'Неверная CAPTCHA<hr>';
 		}
+	}
+
+	if(isset($_GET['post'])){
+		$query = "DELETE FROM posts WHERE id = " .(int)$_GET['post'];
+		$postinfo = $db->query("SELECT * FROM posts WHERE id = " .(int)$_GET['post'])->fetch();
+
+		if($postinfo['ip'] == $_SERVER['REMOTE_ADDR']){
+			$db->query($query);
+			unlink($postinfo['img']);
+		}
+		header("Location: board.php?id=" .(int)$_GET['id']);
 	}
 
 	function create_link($string) {
@@ -133,7 +145,10 @@
 	</head>
 	<body>
 		<a href="thread.php?id=<?php echo($board_name['id']); ?>" class="right">Назад</a>
-		<center><?php echo("<h1>OpenOne'ch! / " .$board_name['name']. "</h1>"); ?></center>
+		<center>
+			<?php if(!empty($error)) echo($error); ?>
+			<?php echo("<h1>OpenOne'ch! / " .$board_name['name']. "</h1>"); ?>
+		</center>
 		<form method="post"  enctype="multipart/form-data">
 			
 			<div class="table-wrapper">
@@ -176,8 +191,10 @@
 								} 
 							?>
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
+							<?php if($myname['ip'] == $_SERVER['REMOTE_ADDR']) echo(' | <a href="?id=' .(int)$_GET['id']. '&post=' .$myname['id']. '">Удалить</a>'); ?>
 						</p>
-						<?php echo('<a href="' .$myname['img']. '" download="' .$decoded['name']. '">' .$decoded['name']. ' (' .$decoded['size']. ' байт)</a>'); ?>
+						<?php echo('<a href="' .$myname['img']. '" download="' .$decoded['name']. '">' .$decoded['name']. ' (' .$decoded['size']. ' байт)</a>'); ?><br><br>
+						<?php echo('<a href="' .$myname['img']. '">Просмотреть файл</a>'); ?>
 						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', conlink(htmlspecialchars($decoded['desc']))). '</p>'); ?>
 					</td>
 				</tr>
@@ -196,6 +213,7 @@
 								} 
 							?>
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
+							<?php if($myname['ip'] == $_SERVER['REMOTE_ADDR']) echo(' | <a href="?id=' .(int)$_GET['id']. '&post=' .$myname['id']. '">Удалить</a>'); ?>
 						</p>
 						<?php echo('<a href="flash.php?id='.(int)$_GET['id'].'">' .$decoded['name']. ' (Проиграть)</a>'); ?>
 						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', conlink(htmlspecialchars($decoded['desc']))). '</p>'); ?>
@@ -221,6 +239,7 @@
 								} 
 							?>
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
+							<?php if($myname['ip'] == $_SERVER['REMOTE_ADDR']) echo(' | <a href="?id=' .(int)$_GET['id']. '&post=' .$myname['id']. '">Удалить</a>'); ?>						
 						</p>
 						<?php echo('<p>' . str_replace('&lt;br /&gt;', '<br>', conlink(htmlspecialchars($myname['text'])). '</p>')); ?>
 					</td>
@@ -247,7 +266,8 @@
 								} 
 							?>
 							<?php echo(date(" H:i m/d/y", $post['date'])) ?> 
-							<?php echo($post['id']); ?>
+							(<?php echo($post['id']); ?>)
+							<?php if($post['ip'] == $_SERVER['REMOTE_ADDR']) echo(' | <a href="?id=' .(int)$_GET['id']. '&post=' .$post['id']. '">Удалить</a>'); ?>
 						</p>
 						<?php echo('<p>' .str_replace('&lt;br /&gt;', '<br>', create_link(conlink(htmlspecialchars($post['text'])))). '</p>'); ?>
 						<a href="javascript:answer('<?php echo($post['id']); ?>');">Ответить</a>

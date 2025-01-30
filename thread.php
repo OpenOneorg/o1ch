@@ -4,7 +4,8 @@
 	
 	$myname = $db->query("SELECT * FROM board WHERE id = " .(int)$_GET['id'])->fetch(PDO::FETCH_ASSOC);
 	$data = $db->query("SELECT * FROM posts WHERE board = " .(int)$_GET['id']. " ORDER BY date DESC");
-	
+	$error = '';
+
 	if(empty($myname)){
 		header("Location: index.php");
 	}
@@ -12,7 +13,7 @@
 	if(isset($_POST['post'])){
 		if($_SESSION['code'] == $_POST['captcha']){
 			if(empty(trim($_POST['text']))){
-				echo('No text<hr>');
+				$error = 'Нет текста<hr>';
 			} else{
 				$myname = $db->query("SELECT * FROM board WHERE id = " .(int)$_GET['id'])->fetch(PDO::FETCH_ASSOC);
 
@@ -98,7 +99,7 @@
 						
 						header("Refresh:0");
 					} else {
-						echo('Bad image<hr>');
+						$error = 'Плохой формат изображение<hr>';
 					}
 				} elseif($myname['type'] == 1){
 					$getid3 = new getID3();
@@ -124,7 +125,7 @@
 							header("Refresh:0");
 						}
 					} else {
-						echo('Bad file<hr>');
+						$error = 'Попробуйте запаковать свой файл в .zip архив со сжатием deflate (Приколы GetID3)<hr>';
 					}
 				} elseif($myname['type'] == 2){
 					$getid3 = new getID3();
@@ -152,12 +153,12 @@
 						}
 						
 					} else {
-						echo('Bad file<hr>');
+						$error = 'Это не SWF файл!<hr>';
 					}
 				}
 			}
 		} else {
-			echo('Invalid CAPTCHA<hr>');
+			$error = 'Неверная CAPTCHA<hr>';
 		}
 	}
 
@@ -180,7 +181,10 @@
 	</head>
 	<body>
 		<a href="index.php" class="right">Домой</a>
-		<center><?php echo("<h1>OpenOne'ch! / " .$myname['name']. "</h1>"); ?></center>
+		<center>
+			<?php if(!empty($error)) echo($error); ?>
+			<?php echo("<h1>OpenOne'ch! / " .$myname['name']. "</h1>"); ?>
+		</center>
 		<form method="post"  enctype="multipart/form-data">
 			<div class="table-wrapper">
 				<table class="submit">
