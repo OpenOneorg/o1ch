@@ -241,7 +241,9 @@
 										echo(htmlspecialchars($post['name'])); 
 									} else { 
 										echo('Анонимус'); 
-									} 
+									}
+
+									echo(' (' .substr(md5($post['ip']), 0, 6). ')')
 								?>
 							</td>
 							<td><?php echo($decoded['name']) ?></td>
@@ -272,6 +274,8 @@
 									} else { 
 										echo('Анонимус'); 
 									} 
+
+									echo(' (' .substr(md5($post['ip']), 0, 6). ')')
 								?>
 								<?php echo(date(" H:i m/d/y", $post['date'])) ?>
 							</p>

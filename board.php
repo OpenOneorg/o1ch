@@ -189,6 +189,8 @@
 								} else { 
 									echo('Анонимус'); 
 								} 
+
+								echo(' (' .substr(md5($myname['ip']), 0, 6). ')')
 							?>
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
 							<?php if($myname['ip'] == $_SERVER['REMOTE_ADDR']) echo(' | <a href="?id=' .(int)$_GET['id']. '&post=' .$myname['id']. '">Удалить</a>'); ?>
@@ -211,6 +213,8 @@
 								} else { 
 									echo('Анонимус'); 
 								} 
+
+								echo(' (' .substr(md5($myname['ip']), 0, 6). ')')
 							?>
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
 							<?php if($myname['ip'] == $_SERVER['REMOTE_ADDR']) echo(' | <a href="?id=' .(int)$_GET['id']. '&post=' .$myname['id']. '">Удалить</a>'); ?>
@@ -237,6 +241,8 @@
 								} else { 
 									echo('Анонимус'); 
 								} 
+
+								echo(' (' .substr(md5($myname['ip']), 0, 6). ')')
 							?>
 							<?php echo(date(" H:i m/d/y", $myname['date'])) ?>
 							<?php if($myname['ip'] == $_SERVER['REMOTE_ADDR']) echo(' | <a href="?id=' .(int)$_GET['id']. '&post=' .$myname['id']. '">Удалить</a>'); ?>						
@@ -264,6 +270,8 @@
 								} else { 
 									echo('Анонимус'); 
 								} 
+
+								echo(' (' .substr(md5($post['ip']), 0, 6). ')')
 							?>
 							<?php echo(date(" H:i m/d/y", $post['date'])) ?> 
 							(<?php echo($post['id']); ?>)
